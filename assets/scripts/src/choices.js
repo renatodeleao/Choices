@@ -28,7 +28,8 @@ import {
   sortByScore,
   generateId,
   triggerEvent,
-  findAncestorByAttrName
+  findAncestorByAttrName,
+  parseJSON
 }
 from './lib/utils.js';
 import './lib/polyfills.js';
@@ -2630,6 +2631,7 @@ class Choices {
             data-choice
             data-id="${data.id}"
             data-value="${data.value}"
+            data-custom-properties='${JSON.stringify(data.customProperties)}'
             ${data.disabled ?
               'data-choice-disabled aria-disabled="true"' :
               'data-choice-selectable'
@@ -2694,7 +2696,7 @@ class Choices {
       },
       option: (data) => {
         return strToEl(`
-          <option value="${data.value}" selected>${data.label}</option>
+          <option value="${data.value}" selected data-custom-properties='${JSON.stringify(data.customProperties)}'>${data.label}</option>
         `);
       },
     };
@@ -2811,7 +2813,8 @@ class Choices {
             label: o.innerHTML,
             selected: o.selected,
             disabled: o.disabled || o.parentNode.disabled,
-            placeholder: o.hasAttribute('placeholder')
+            placeholder: o.hasAttribute('placeholder'),
+            customProperties: parseJSON(o.getAttribute('data-custom-properties'))
           });
         });
 
