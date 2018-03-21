@@ -580,3 +580,11 @@ export const triggerEvent = (element, type, customArgs = null) => {
 
   return element.dispatchEvent(event);
 };
+
+/**
+ * Parse  JSON String to Object
+ * (Allow single quote objects key/value for those who don't like escaping)
+ * @Param {String} str JSON-like string object
+ * @return {Object}    Empty object if no arguments
+ */
+export const parseJSON = (s) => (!s || typeof JSON.parse !== 'function') ? {} : JSON.parse(s.replace(/'/g, '"'));
